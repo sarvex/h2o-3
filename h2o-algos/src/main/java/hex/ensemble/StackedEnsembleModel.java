@@ -290,7 +290,7 @@ public class StackedEnsembleModel extends Model<StackedEnsembleModel,StackedEnse
     @Override
     public ModelMetrics.MetricBuilder<?> getMetricBuilder() {
       throw new UnsupportedOperationException("Stacked Ensemble model doesn't implement MetricBuilder infrastructure code, " +
-              "retrieve your metrics by calling getOrMakeMetrics method.");
+              "retrieve your metrics by calling makeModelMetrics method.");
     }
   }
   
