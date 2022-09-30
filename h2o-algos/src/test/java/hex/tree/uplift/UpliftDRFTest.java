@@ -66,7 +66,7 @@ public class UpliftDRFTest extends TestUtil {
             assertNotNull(model);
 
             Frame out = model.score(train);
-            Scope.track_generic(out);
+            Scope.track(out);
             assertArrayEquals(new String[]{"uplift_predict", "p_y1_ct1", "p_y1_ct0"}, out.names());
             assertEquals(train.numRows(), out.numRows());
 
@@ -349,7 +349,7 @@ public class UpliftDRFTest extends TestUtil {
             UpliftDRFModel model = udrf.trainModel().get();
             Scope.track_generic(model);
             Frame preds = model.score(train);
-            Scope.track_generic(preds);
+            Scope.track(preds);
             assertArrayEquals("Prediction frame column names are incorrect.",
                     preds.names(), new String[]{"uplift_predict", "p_y1_ct1", "p_y1_ct0"});
         } finally {
