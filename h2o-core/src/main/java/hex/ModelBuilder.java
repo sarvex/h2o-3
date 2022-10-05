@@ -832,7 +832,7 @@ abstract public class ModelBuilder<M extends Model<M,P,O>, P extends Model.Param
   public ModelMetrics.MetricBuilder[] cv_scoreCVModels(int N, Vec[] weights, ModelBuilder<M, P, O>[] cvModelBuilders) {
     if (_job.stop_requested()) {
       Log.info("Skipping scoring of CV models");
-      throw new Job.JobCancelledException();
+      throw new Job.JobCancelledException(_job);
     }
     assert weights.length == 2*N;
     assert cvModelBuilders.length == N;
@@ -843,9 +843,10 @@ abstract public class ModelBuilder<M extends Model<M,P,O>, P extends Model.Param
     for (int i=0; i<N; ++i) {
       if (_job.stop_requested()) {
         Log.info("Skipping scoring for last "+(N-i)+" out of "+N+" CV models");
-        throw new Job.JobCancelledException();
+        throw new Job.JobCancelledException(_job);
       }
       Frame cvValid = cvModelBuilders[i].valid();
+      Frame preds = null;
       try (Scope.Safe s = Scope.safe(cvValid)) {
         Frame adaptFr = new Frame(cvValid);
         if (makeCVMetrics(cvModelBuilders[i])) {
@@ -856,7 +857,9 @@ abstract public class ModelBuilder<M extends Model<M,P,O>, P extends Model.Param
                   || (cvModel.isDistributionHuber() /*need to compute quantiles on abs error of holdout predictions*/)) {
             String predName = cvModelBuilders[i].getPredictionKey();
             Model.PredictScoreResult result = cvModel.predictScoreImpl(cvValid, adaptFr, predName, _job, true, CFuncRef.NOP);
-            Scope.untrack(result.getPredictions());
+            preds = result.getPredictions();
+            Scope.untrack(preds);
+//            System.out.println(ScopeInspect.keysToString("CV Predictions "+i, preds._key));
             result.makeModelMetrics(cvValid, adaptFr);
             mbs[i] = result.getMetricBuilder();
             DKV.put(cvModel);
@@ -864,12 +867,15 @@ abstract public class ModelBuilder<M extends Model<M,P,O>, P extends Model.Param
             mbs[i] = cvModel.scoreMetrics(adaptFr);
           }
         }
+      } finally {
+        Scope.track(preds);
       }
       DKV.remove(cvModelBuilders[i]._parms._train,fs);
       DKV.remove(cvModelBuilders[i]._parms._valid,fs);
       weights[2*i  ].remove(fs);
       weights[2*i+1].remove(fs);
     }
+//    System.out.println("Scope after cv_scoreCVModels of "+_result+":\n"+ScopeInspect.dataKeysToString());
     
     fs.blockForPending();
     return mbs;
@@ -900,7 +906,7 @@ abstract public class ModelBuilder<M extends Model<M,P,O>, P extends Model.Param
   private void buildMainModel(long max_runtime_millis) {
     if (_job.stop_requested()) {
       Log.info("Skipping main model");
-      throw new Job.JobCancelledException();
+      throw new Job.JobCancelledException(_job);
     }
     assert _job.isRunning();
     Log.info("Building main model.");
@@ -946,7 +952,7 @@ abstract public class ModelBuilder<M extends Model<M,P,O>, P extends Model.Param
     if (_parms._keep_cross_validation_predictions) {
       for (Key<Frame> k : predKeys) {
         Frame fr = DKV.getGet(k);
-        if (fr != null) Scope.untrack(fr.keysList());
+        if (fr != null) Scope.untrack(fr);
       }
     } else {
       int count = Model.deleteAll(predKeys);
@@ -954,7 +960,7 @@ abstract public class ModelBuilder<M extends Model<M,P,O>, P extends Model.Param
     }
     mainModel._output._cross_validation_metrics = mbs[0].makeModelMetrics(mainModel, _parms.train(), null, holdoutPreds);
     if (holdoutPreds != null) {
-      if (_parms._keep_cross_validation_predictions) Scope.untrack(holdoutPreds.keysList());
+      if (_parms._keep_cross_validation_predictions) Scope.untrack(holdoutPreds);
       else holdoutPreds.remove();
     }
     mainModel._output._cross_validation_metrics._description = N + "-fold cross-validation on training data (Metrics computed for combined holdout predictions)";

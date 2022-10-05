@@ -819,7 +819,7 @@ public class DeepLearningModel extends Model<DeepLearningModel,DeepLearningModel
     final int n=1;
     new MRTask() {
       @Override public void map( Chunk chks[] ) {
-        if (isCancelled() || job !=null && job.stop_requested()) throw new Job.JobCancelledException();
+        if (isCancelled() || job !=null && job.stop_requested()) throw new Job.JobCancelledException(job);
         double tmp [] = new double[len];
         final Neurons[] neurons = DeepLearningTask.makeNeuronsForTesting(model_info);
         for( int row=0; row<chks[0]._len; row++ ) {
