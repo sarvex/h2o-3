@@ -2158,6 +2158,7 @@ abstract public class ModelBuilder<M extends Model<M,P,O>, P extends Model.Param
       return _toDelete;
     }
 
+    /** must be called before Scope.exit() */
     void cleanUp() {
       if (_toDelete == null) return;
       // converting Workspace-tracked keys to Scope-tracked keys
