@@ -14,7 +14,8 @@ import org.junit.runners.model.Statement;
 import water.api.StreamingSchema;
 import water.fvec.*;
 import water.init.NetworkInit;
-import water.junit.rules.PriorityTestRule;
+import water.junit.Priority;
+import water.junit.rules.RulesPriorities;
 import water.parser.BufferedString;
 import water.parser.DefaultParserProviders;
 import water.parser.ParseDataset;
@@ -394,7 +395,7 @@ public class TestUtil extends Iced {
 
   /* Ignore tests specified in the ignore.tests system property: applied last, if test is ignored, no other rule with be evaluated */
   @Rule
-  transient public TestRule runRule = new PriorityTestRule() {
+  transient public TestRule runRule = new @Priority(RulesPriorities.RUN_TEST) TestRule() {
     @Override
     public Statement apply(Statement base, Description description) {
       String testName = description.getClassName() + "#" + description.getMethodName();
@@ -427,11 +428,6 @@ public class TestUtil extends Iced {
       } else {
         return base;
       }
-    }
-
-    @Override
-    public int priority() {
-      return PriorityTestRule.IGNORED_TEST_RULE_PRIORITY;
     }
   };
 
