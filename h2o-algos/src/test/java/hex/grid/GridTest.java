@@ -6,7 +6,6 @@ import hex.ModelMetrics;
 import hex.faulttolerance.Recovery;
 import hex.genmodel.utils.DistributionFamily;
 import hex.glm.GLMModel;
-import hex.grid.HyperSpaceWalker.BaseWalker.WalkerFactory;
 import hex.tree.CompressedTree;
 import hex.tree.gbm.GBMModel;
 import org.junit.Before;
@@ -18,8 +17,6 @@ import water.*;
 import water.exceptions.H2OGridException;
 import water.fvec.Frame;
 import water.fvec.Vec;
-import water.parser.BufferedString;
-import water.test.dummy.DummyAction;
 import water.test.dummy.DummyModelParameters;
 import water.test.dummy.MessageInstallAction;
 
@@ -71,7 +68,7 @@ public class GridTest extends TestUtil {
 
       Job<Grid> gridSearch = GridSearch.startGridSearch(
               null, params, hyperParms,
-              new GridSearch.SimpleParametersBuilderFactory(),
+              new SimpleParametersBuilderFactory(),
               searchCriteria, 2
       );
 
@@ -109,7 +106,7 @@ public class GridTest extends TestUtil {
 
       Job<Grid> gridSearch = GridSearch.startGridSearch(
               dest, params, hyperParms,
-              new GridSearch.SimpleParametersBuilderFactory(),
+              new SimpleParametersBuilderFactory(),
               new HyperSpaceSearchCriteria.CartesianSearchCriteria(),
               2
       );
@@ -369,7 +366,7 @@ public class GridTest extends TestUtil {
       Scope.track(trainingFrame);
       Job<Grid> gs = GridSearch.startGridSearch(
               null, gridKey, params, hyperParms,
-              new GridSearch.SimpleParametersBuilderFactory(),
+              new SimpleParametersBuilderFactory(),
               new HyperSpaceSearchCriteria.CartesianSearchCriteria(),
               recovery1, 1
       );
@@ -399,7 +396,7 @@ public class GridTest extends TestUtil {
               null, gridKey,
               loadedGrid1.getParams(),
               loadedGrid1.getHyperParams(),
-              new GridSearch.SimpleParametersBuilderFactory(),
+              new SimpleParametersBuilderFactory(),
               loadedGrid1.getSearchCriteria(),
               recovery2,
               loadedGrid1.getParallelism()
@@ -456,7 +453,7 @@ public class GridTest extends TestUtil {
       Key gridKey = Key.make("gridSearchWithRecovery_GRID");
       Job<Grid> gs = GridSearch.startGridSearch(
               null, gridKey, params, hyperParms,
-              new GridSearch.SimpleParametersBuilderFactory<>(),
+              new SimpleParametersBuilderFactory<>(),
               new HyperSpaceSearchCriteria.CartesianSearchCriteria(),
               recovery, GridSearch.SEQUENTIAL_MODEL_BUILDING
       );
@@ -542,7 +539,7 @@ public class GridTest extends TestUtil {
       Key gridKey = Key.make("gridSearchWithRecovery_GRID");
       Job<Grid> gs = GridSearch.startGridSearch(
               null, gridKey, params, hyperParms,
-              new GridSearch.SimpleParametersBuilderFactory<>(),
+              new SimpleParametersBuilderFactory<>(),
               new HyperSpaceSearchCriteria.CartesianSearchCriteria(),
               recovery, GridSearch.SEQUENTIAL_MODEL_BUILDING
       );
@@ -585,7 +582,7 @@ public class GridTest extends TestUtil {
       Key gridKey = Key.make("gridSearchWithRecoveryGlm");
       Job<Grid> gs = GridSearch.startGridSearch(
               null, gridKey, params, hyperParms,
-              new GridSearch.SimpleParametersBuilderFactory<>(),
+              new SimpleParametersBuilderFactory<>(),
               new HyperSpaceSearchCriteria.CartesianSearchCriteria(),
               recovery, GridSearch.SEQUENTIAL_MODEL_BUILDING
       );
@@ -849,7 +846,7 @@ public class GridTest extends TestUtil {
       params._train = trainingFrame._key;
       params._response_column = "species";
 
-      GridSearch.SimpleParametersBuilderFactory simpleParametersBuilderFactory = new GridSearch.SimpleParametersBuilderFactory();
+      SimpleParametersBuilderFactory simpleParametersBuilderFactory = new SimpleParametersBuilderFactory();
       HyperSpaceSearchCriteria.RandomDiscreteValueSearchCriteria hyperSpaceSearchCriteria = new HyperSpaceSearchCriteria.RandomDiscreteValueSearchCriteria();
       int custom_max_model = 2;
       hyperSpaceSearchCriteria.set_max_models(custom_max_model);
@@ -885,7 +882,7 @@ public class GridTest extends TestUtil {
       params._train = trainingFrame._key;
       params._response_column = "species";
 
-      GridSearch.SimpleParametersBuilderFactory simpleParametersBuilderFactory = new GridSearch.SimpleParametersBuilderFactory();
+      SimpleParametersBuilderFactory simpleParametersBuilderFactory = new SimpleParametersBuilderFactory();
       HyperSpaceSearchCriteria.RandomDiscreteValueSearchCriteria hyperSpaceSearchCriteria = new HyperSpaceSearchCriteria.RandomDiscreteValueSearchCriteria();
       int custom_max_model = 3;
       hyperSpaceSearchCriteria.set_max_models(custom_max_model);
