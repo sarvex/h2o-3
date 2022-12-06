@@ -861,7 +861,6 @@ class H2OInfogram(H2OEstimator):
         assert_is_type(top_n_features, None, int)
         self._parms["top_n_features"] = top_n_features
 
-
     def _extract_x_from_model(self):
         """
         extract admissible features from an Infogram model.
@@ -1087,3 +1086,4 @@ class H2OInfogram(H2OEstimator):
         sup._train(parms, verbose=verbose)
         # can probably get rid of model attributes that Erin does not want here
         return self
+

@@ -1219,7 +1219,6 @@ class H2OModelSelectionEstimator(H2OEstimator):
         assert_is_type(p_values_threshold, None, numeric)
         self._parms["p_values_threshold"] = p_values_threshold
 
-
     def coef_norm(self, predictor_size=None):
         """
         Get the normalized coefficients for all models built with different number of predictors.
@@ -1371,3 +1370,4 @@ class H2OModelSelectionEstimator(H2OEstimator):
         :return: a list of best predictors subset
         """
         return self._model_json["output"]["best_predictors_subset"]
+

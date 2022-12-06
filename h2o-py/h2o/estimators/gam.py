@@ -1446,3 +1446,4 @@ class H2OGeneralizedAdditiveEstimator(H2OEstimator):
         if "glm_scoring_history" in model and model["glm_scoring_history"] is not None:
             return model["glm_scoring_history"].as_data_frame()
         print("No score history for this model")
+

@@ -2219,4 +2219,3 @@ class H2OGradientBoostingEstimator(H2OEstimator):
         assert_is_type(interaction_constraints, None, [[str]])
         self._parms["interaction_constraints"] = interaction_constraints
 
-

@@ -885,7 +885,6 @@ class H2OStackedEnsembleEstimator(H2OEstimator):
         assert_is_type(auc_type, None, Enum("auto", "none", "macro_ovr", "weighted_ovr", "macro_ovo", "weighted_ovo"))
         self._parms["auc_type"] = auc_type
 
-
     def metalearner(self):
         """Print the metalearner of an H2OStackedEnsembleEstimator.
 
@@ -1007,3 +1006,4 @@ class H2OStackedEnsembleEstimator(H2OEstimator):
             raise H2OResponseError("Meta learner didn't get to be trained in time. "
                                    "Try increasing max_runtime_secs or setting it to 0 (unlimited).")
         return self
+

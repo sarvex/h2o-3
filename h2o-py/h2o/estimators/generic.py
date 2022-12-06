@@ -101,7 +101,6 @@ class H2OGenericEstimator(H2OEstimator):
         assert_is_type(path, None, str)
         self._parms["path"] = path
 
-
     @staticmethod
     def from_file(file=str, model_id=None):
         """
@@ -128,3 +127,4 @@ class H2OGenericEstimator(H2OEstimator):
         model.train()
 
         return model
+

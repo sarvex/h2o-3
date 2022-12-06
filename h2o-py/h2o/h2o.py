@@ -20,12 +20,6 @@ from .base import Keyed
 from .estimators import create_estimator
 from .estimators.generic import H2OGenericEstimator
 from .exceptions import H2OError, H2ODeprecationWarning
-from .estimators.gbm import H2OGradientBoostingEstimator
-from .estimators.glm import H2OGeneralizedLinearEstimator
-from .estimators.xgboost import H2OXGBoostEstimator
-from .estimators.infogram import H2OInfogram
-from .estimators.deeplearning import H2OAutoEncoderEstimator, H2ODeepLearningEstimator
-from .estimators.extended_isolation_forest import H2OExtendedIsolationForestEstimator
 from .exceptions import H2OConnectionError, H2OValueError
 from .expr import ExprNode
 from .frame import H2OFrame
@@ -515,8 +509,8 @@ def load_grid(grid_file_path, load_params_references=False):
     :examples:
 
     >>> from collections import OrderedDict
-    >>> from h2o.grid.grid_search import H2OGridSearch
-    >>> from h2o.estimators.gbm import H2OGradientBoostingEstimator
+    >>> from h2o.grid import H2OGridSearch
+    >>> from h2o.estimators import H2OGradientBoostingEstimator
     >>> train = h2o.import_file("http://h2o-public-test-data.s3.amazonaws.com/smalldata/iris/iris_wheader.csv")
     # Run GBM Grid Search
     >>> ntrees_opts = [1, 3]
@@ -560,8 +554,8 @@ def save_grid(grid_directory, grid_id, save_params_references=False, export_cros
     :examples:
 
     >>> from collections import OrderedDict
-    >>> from h2o.grid.grid_search import H2OGridSearch
-    >>> from h2o.estimators.gbm import H2OGradientBoostingEstimator
+    >>> from h2o.grid import H2OGridSearch
+    >>> from h2o.estimators import H2OGradientBoostingEstimator
     >>> train = h2o.import_file("http://h2o-public-test-data.s3.amazonaws.com/smalldata/iris/iris_wheader.csv")
     # Run GBM Grid Search
     >>> ntrees_opts = [1, 3]
@@ -1045,6 +1039,7 @@ def models():
 
     :examples:
 
+    >>> from h2o.estimators import H2OGeneralizedLinearEstimator, H2OXGBoostEstimator
     >>> airlines= h2o.import_file("https://s3.amazonaws.com/h2o-public-test-data/smalldata/airlines/allyears2k_headers.zip")
     >>> airlines["Year"]= airlines["Year"].asfactor()
     >>> airlines["Month"]= airlines["Month"].asfactor()
@@ -1070,6 +1065,7 @@ def get_model(model_id):
 
     :examples:
 
+    >>> from h2o.estimators import H2OGeneralizedLinearEstimator
     >>> airlines= h2o.import_file("https://s3.amazonaws.com/h2o-public-test-data/smalldata/airlines/allyears2k_headers.zip")
     >>> airlines["Year"]= airlines["Year"].asfactor()
     >>> airlines["Month"]= airlines["Month"].asfactor()
@@ -1109,7 +1105,7 @@ def get_grid(grid_id):
 
     :examples:
 
-    >>> from h2o.grid.grid_search import H2OGridSearch
+    >>> from h2o.grid import H2OGridSearch
     >>> from h2o.estimators import H2OGradientBoostingEstimator
     >>> airlines= h2o.import_file("https://s3.amazonaws.com/h2o-public-test-data/smalldata/airlines/allyears2k_headers.zip")
     >>> x = ["DayofMonth", "Month"]
@@ -1179,6 +1175,7 @@ def no_progress():
 
     :examples:
 
+    >>> from h2o.estimators import H2OGeneralizedLinearEstimator
     >>> h2o.no_progress()
     >>> airlines= h2o.import_file("https://s3.amazonaws.com/h2o-public-test-data/smalldata/airlines/allyears2k_headers.zip")
     >>> x = ["DayofMonth", "Month"]
@@ -1195,6 +1192,7 @@ def show_progress():
 
     :examples:
 
+    >>> from h2o.estimators import H2OGeneralizedLinearEstimator
     >>> h2o.no_progress()
     >>> airlines= h2o.import_file("https://s3.amazonaws.com/h2o-public-test-data/smalldata/airlines/allyears2k_headers.zip")
     >>> x = ["DayofMonth", "Month"]
@@ -1381,6 +1379,7 @@ def download_pojo(model, path="", get_jar=True, jar_name=""):
 
     :examples:
 
+    >>> from h2o.estimators import H2OGeneralizedLinearEstimator
     >>> h2o_df = h2o.import_file("http://s3.amazonaws.com/h2o-public-test-data/smalldata/prostate/prostate.csv.zip")
     >>> h2o_df['CAPSULE'] = h2o_df['CAPSULE'].asfactor()
     >>> from h2o.estimators.glm import H2OGeneralizedLinearEstimator
@@ -1482,7 +1481,7 @@ def save_model(model, path="", force=False, export_cross_validation_predictions=
 
     :examples:
         
-    >>> from h2o.estimators.glm import H2OGeneralizedLinearEstimator
+    >>> from h2o.estimators import H2OGeneralizedLinearEstimator
     >>> h2o_df = h2o.import_file("http://s3.amazonaws.com/h2o-public-test-data/smalldata/prostate/prostate.csv.zip")
     >>> my_model = H2OGeneralizedLinearEstimator(family = "binomial")
     >>> my_model.train(y = "CAPSULE",
@@ -1518,7 +1517,7 @@ def download_model(model, path="", export_cross_validation_predictions=False, fi
 
     :examples:
     
-    >>> from h2o.estimators.glm import H2OGeneralizedLinearEstimator
+    >>> from h2o.estimators import H2OGeneralizedLinearEstimator
     >>> h2o_df = h2o.import_file("http://s3.amazonaws.com/h2o-public-test-data/smalldata/prostate/prostate.csv.zip")
     >>> my_model = H2OGeneralizedLinearEstimator(family = "binomial")
     >>> my_model.train(y = "CAPSULE",
@@ -1564,6 +1563,7 @@ def load_model(path):
 
     :examples:
 
+    >>> from h2o.estimators import H2OGeneralizedLinearEstimator
     >>> training_data = h2o.import_file("https://s3.amazonaws.com/h2o-public-test-data/smalldata/airlines/allyears2k_headers.zip")
     >>> predictors = ["Origin", "Dest", "Year", "UniqueCarrier",
     ...               "DayOfWeek", "Month", "Distance", "FlightNum"]
@@ -1607,6 +1607,7 @@ def export_file(frame, path, force=False, sep=",", compression=None, parts=1, he
 
     :examples:
 
+    >>> from h2o.estimators import H2OGeneralizedLinearEstimator
     >>> h2o_df = h2o.import_file("http://h2o-public-test-data.s3.amazonaws.com/smalldata/prostate/prostate.csv")
     >>> h2o_df['CAPSULE'] = h2o_df['CAPSULE'].asfactor()
     >>> rand_vec = h2o_df.runif(1234)
@@ -2004,6 +2005,7 @@ def make_metrics(predicted, actual, domain=None, distribution=None, weights=None
            for calculation the AUUC. Default is -1, which means 1000.
     :examples:
 
+    >>> from h2o.estimators import H2OGradientBoostingEstimator
     >>> fr = h2o.import_file("http://s3.amazonaws.com/h2o-public-test-data/smalldata/prostate/prostate.csv.zip")
     >>> fr["CAPSULE"] = fr["CAPSULE"].asfactor()
     >>> fr["RACE"] = fr["RACE"].asfactor()
@@ -2358,7 +2360,7 @@ def print_mojo(mojo_path, format="json", tree_index=None):
     :example:
 
     >>> import json
-    >>> from h2o.estimators.gbm import H2OGradientBoostingEstimator
+    >>> from h2o.estimators import H2OGradientBoostingEstimator
     >>> prostate = h2o.import_file("http://s3.amazonaws.com/h2o-public-test-data/smalldata/prostate/prostate.csv")
     >>> prostate["CAPSULE"] = prostate["CAPSULE"].asfactor()
     >>> gbm_h2o = H2OGradientBoostingEstimator(ntrees = 5,

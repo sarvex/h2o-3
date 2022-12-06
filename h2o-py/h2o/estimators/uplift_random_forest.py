@@ -583,4 +583,3 @@ class H2OUpliftRandomForestEstimator(H2OEstimator):
         assert_is_type(auuc_nbins, None, int)
         self._parms["auuc_nbins"] = auuc_nbins
 
-

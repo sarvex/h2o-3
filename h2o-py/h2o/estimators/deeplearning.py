@@ -3220,7 +3220,6 @@ class H2ODeepLearningEstimator(H2OEstimator):
         self._parms["auc_type"] = auc_type
 
 
-
 class H2OAutoEncoderEstimator(H2ODeepLearningEstimator):
     """
     :examples:
@@ -3240,3 +3239,4 @@ class H2OAutoEncoderEstimator(H2ODeepLearningEstimator):
     def __init__(self, **kwargs):
         super(H2OAutoEncoderEstimator, self).__init__(**kwargs)
         self.autoencoder = True
+

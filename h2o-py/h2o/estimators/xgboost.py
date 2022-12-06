@@ -2513,7 +2513,6 @@ class H2OXGBoostEstimator(H2OEstimator):
         assert_is_type(score_eval_metric_only, None, bool)
         self._parms["score_eval_metric_only"] = score_eval_metric_only
 
-
     @staticmethod
     def available():
         """
@@ -2580,3 +2579,4 @@ class H2OXGBoostEstimator(H2OEstimator):
         paramsSet = self.full_parameters
 
         return nativeXGBoostParams, paramsSet['ntrees']['actual_value']
+

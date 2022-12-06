@@ -277,4 +277,3 @@ class H2OExtendedIsolationForestEstimator(H2OEstimator):
         assert_is_type(seed, None, int)
         self._parms["seed"] = seed
 
-
