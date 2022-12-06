@@ -45,7 +45,6 @@ except ImportError:
             return NotImplemented
 
 
-from h2o.backend.server import H2OLocalServer
 from h2o.exceptions import H2OValueError
 from h2o.utils.typechecks import assert_is_type, is_type, numeric
 
@@ -501,6 +500,8 @@ def mojo_predict_csv(input_csv_path, mojo_zip_path, output_csv_path=None, genmod
     :param extra_cmd_args: Optional, a list of additional arguments to append to genmodel.jar's command line. 
     :return: List of computed predictions
     """
+    from h2o.backend.server import H2OLocalServer
+    
     default_java_options = '-Xmx4g -XX:ReservedCodeCacheSize=256m'
     prediction_output_file = 'prediction.csv'
 
